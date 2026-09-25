@@ -5,7 +5,6 @@
 #define maxNomeSexTam 9+1+1 // o nome "masculino" + \n + \0
 #define cpfTam 11
 #define maxAlunosPorDisciplina 5
-// #define maxCaracSemestre 10 // "primeiro" = 8 carac, ou em num, ano (4 carac) + '.' + semestre + \n + \0 
 #define TRUE 1
 #define FALSE 0
 #define minLetrasBusca 3
@@ -36,6 +35,7 @@ void painelInformacoesDisplinas();
 void painelCadastro();
 void exibirErroCadastro();
 void exibirCadastroSucesso();
+void exibirCadastroDeletado();
 
 void cadastrarPessoa(infoAlunosProfs pessoa[], int idxPessoa, int qtdPessoasCadastrados);
 void cadastrarCPF(infoAlunosProfs pessoa[], int idxPessoa, int qtdPessoasCadastrados);
@@ -63,8 +63,8 @@ void alunosMenosDeTresDisciplinas(infoDisciplinas disciplina[], infoAlunosProfs 
 void disciplinasComMais40vagas(infoDisciplinas disciplina[], infoAlunosProfs professor[], int qtdDisciplinasCadastradas);
 
 
-void buscarCadastrado(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados, char nomeBusca[]);
-void listarAniversariantes(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados, int mesAtual);
+void buscarCadastrado(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados);
+void listarAniversariantes(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados);
 
 
 
@@ -77,8 +77,7 @@ int main(){
     infoDisciplinas disciplina[maxNomes];
     int qtdDisciplinasCadastradas = 0;
 
-    int saida, opcao, mesAtual;
-    char nomeBusca[maxCaracPorNome];
+    int saida, opcao;
     saida = FALSE;
 
     while (saida == FALSE){
@@ -131,9 +130,7 @@ int main(){
                                             exibirErroCadastro();
                                         else {
                                             qtdAlunosCadastrados = deletarCadastro(qtdAlunosCadastrados);
-                                            printf("XXXXXXXXXXXXXXXXXX\n");
-                                            printf("Cadastro Deletado!\n");
-                                            printf("XXXXXXXXXXXXXXXXXX\n");
+                                            exibirCadastroDeletado();
                                         }
                                         break;
                                     }
@@ -144,19 +141,31 @@ int main(){
                             break;
                         }
                         case 2: {
-                            listarPessoas(aluno, qtdAlunosCadastrados);
+                            if (qtdAlunosCadastrados == 0)
+                                exibirErroCadastro();
+                            else
+                                listarPessoas(aluno, qtdAlunosCadastrados);
                             break;
                         }
                         case 3: {
-                            listarNomesOrdem(aluno, qtdAlunosCadastrados);
+                            if (qtdAlunosCadastrados == 0)
+                                exibirErroCadastro();
+                            else
+                                listarNomesOrdem(aluno, qtdAlunosCadastrados);
                             break;
                         }
                         case 4: {
-                            listarSexo(aluno, qtdAlunosCadastrados);
+                            if (qtdAlunosCadastrados == 0)
+                                exibirErroCadastro();
+                            else
+                                listarSexo(aluno, qtdAlunosCadastrados);
                             break;
                         }
                         case 5: {
-                            listarNascimento(aluno, qtdAlunosCadastrados);
+                            if (qtdAlunosCadastrados == 0)
+                                exibirErroCadastro();
+                            else
+                                listarNascimento(aluno, qtdAlunosCadastrados);
                             break;
                         }
                     }
@@ -205,9 +214,7 @@ int main(){
                                             exibirErroCadastro();
                                         else {
                                             qtdProfsCadastrados = deletarCadastro(qtdProfsCadastrados);
-                                            printf("******************\n");
-                                            printf("Cadastro Deletado!\n");
-                                            printf("******************\n");
+                                            exibirCadastroDeletado();
                                         }
                                         break;
                                     }
@@ -218,19 +225,31 @@ int main(){
                             break;
                         }
                         case 2: {
-                            listarPessoas(professor, qtdProfsCadastrados);
+                            if (qtdProfsCadastrados == 0)
+                                exibirErroCadastro();
+                            else 
+                                listarPessoas(professor, qtdProfsCadastrados);
                             break;
                         }
                         case 3: {
-                            listarNomesOrdem(professor, qtdProfsCadastrados);
+                            if (qtdProfsCadastrados == 0)
+                                exibirErroCadastro();
+                            else 
+                                listarNomesOrdem(professor, qtdProfsCadastrados);
                             break;
                         }
                         case 4: {
-                            listarSexo(professor, qtdProfsCadastrados);
+                            if (qtdProfsCadastrados == 0)
+                                exibirErroCadastro();
+                            else 
+                                listarSexo(professor, qtdProfsCadastrados);
                             break;
                         }
                         case 5: {
-                            listarNascimento(professor, qtdProfsCadastrados);
+                            if (qtdProfsCadastrados == 0)
+                                exibirErroCadastro();
+                            else 
+                                listarNascimento(professor, qtdProfsCadastrados);
                             break;
                         }
                     }
@@ -262,19 +281,21 @@ int main(){
                                         break;
                                     }
                                     case 1: {
-                                        if (qtdProfsCadastrados > 0){
+                                        if (qtdProfsCadastrados == 0){
+                                            exibirErroCadastro();
+                                            
+                                        }
+                                        else {
                                             cadastrarDisciplina(disciplina, qtdDisciplinasCadastradas, professor, qtdProfsCadastrados, qtdDisciplinasCadastradas);
                                             qtdDisciplinasCadastradas++;
                                         }
-                                        else
-                                            exibirErroCadastro();
                                         break;
                                     }
                                     case 2: {
-                                        if (qtdDisciplinasCadastradas > 0)
-                                            atualizarCadastroDisciplina(disciplina, qtdDisciplinasCadastradas, professor, qtdProfsCadastrados);
-                                        else
+                                        if (qtdDisciplinasCadastradas == 0)
                                             exibirErroCadastro();
+                                        else
+                                            atualizarCadastroDisciplina(disciplina, qtdDisciplinasCadastradas, professor, qtdProfsCadastrados);
                                         break;
                                     }
                                     case 3: {
@@ -282,9 +303,7 @@ int main(){
                                             exibirErroCadastro();
                                         else {
                                             qtdDisciplinasCadastradas = deletarCadastro(qtdDisciplinasCadastradas);
-                                            printf("******************\n");
-                                            printf("Cadastro Deletado!\n");
-                                            printf("******************\n");
+                                            exibirCadastroDeletado();
                                         }    
                                         break;
                                     }
@@ -294,50 +313,50 @@ int main(){
                             break;
                         }
                         case 2: {
-                            if (qtdAlunosCadastrados > 0 && qtdDisciplinasCadastradas > 0)
-                                inserirAlunoDisciplina(aluno, qtdAlunosCadastrados, disciplina, qtdDisciplinasCadastradas);
-                            else 
+                            if (qtdAlunosCadastrados == 0 && qtdDisciplinasCadastradas == 0)
                                 exibirErroCadastro();
+                            else 
+                                inserirAlunoDisciplina(aluno, qtdAlunosCadastrados, disciplina, qtdDisciplinasCadastradas);
 
                             break;
                         }
                         case 3: {
-                            if (qtdAlunosCadastrados > 0 && qtdDisciplinasCadastradas > 0)
-                                excluirAlunoDisciplina(disciplina, qtdDisciplinasCadastradas);
-                            else
+                            if (qtdAlunosCadastrados == 0 && qtdDisciplinasCadastradas == 0)
                                 exibirErroCadastro();
+                            else
+                                excluirAlunoDisciplina(disciplina, qtdDisciplinasCadastradas);
 
                             break;
                         }
                         case 4: {
-                            if (qtdDisciplinasCadastradas > 0)
-                                listarDisciplinas(disciplina, qtdDisciplinasCadastradas, professor);
-                            else 
+                            if (qtdDisciplinasCadastradas == 0)
                                 exibirErroCadastro();
+                            else
+                                listarDisciplinas(disciplina, qtdDisciplinasCadastradas, professor);    
 
                             break;
                         }
                         case 5: {
-                            if (qtdAlunosCadastrados > 0 && qtdDisciplinasCadastradas > 0)
-                                listarUmaDisciplina(disciplina, aluno, professor, qtdDisciplinasCadastradas);
-                            else
+                            if (qtdAlunosCadastrados == 0 && qtdDisciplinasCadastradas == 0)
                                 exibirErroCadastro();
+                            else
+                                listarUmaDisciplina(disciplina, aluno, professor, qtdDisciplinasCadastradas);
 
                             break;
                         }
                         case 6: {
-                            if (qtdAlunosCadastrados > 0 && qtdDisciplinasCadastradas > 0)
-                                alunosMenosDeTresDisciplinas(disciplina, aluno, qtdDisciplinasCadastradas, qtdAlunosCadastrados);
-                            else
+                            if (qtdAlunosCadastrados == 0 && qtdDisciplinasCadastradas == 0)
                                 exibirErroCadastro();
+                            else
+                                alunosMenosDeTresDisciplinas(disciplina, aluno, qtdDisciplinasCadastradas, qtdAlunosCadastrados);
 
                             break;
                         }
                         case 7: {
-                            if (qtdAlunosCadastrados > 0 && qtdDisciplinasCadastradas > 0)
-                                disciplinasComMais40vagas(disciplina, professor, qtdDisciplinasCadastradas);
+                            if (qtdAlunosCadastrados == 0 && qtdDisciplinasCadastradas == 0)
+                                exibirErroCadastro();
                             else
-                               exibirErroCadastro();
+                               disciplinasComMais40vagas(disciplina, professor, qtdDisciplinasCadastradas);
 
                             break;
                         }
@@ -349,21 +368,17 @@ int main(){
             case 4: {
                 if (qtdAlunosCadastrados == 0 && qtdProfsCadastrados == 0)
                     exibirErroCadastro();
-                else {
-                    printf("Digite o nome procurado:\n");
-                    fgets (nomeBusca, maxCaracPorNome, stdin);
-                    buscarCadastrado(aluno, professor, qtdAlunosCadastrados, qtdProfsCadastrados, nomeBusca);
-                }
+                else 
+                    buscarCadastrado(aluno, professor, qtdAlunosCadastrados, qtdProfsCadastrados);
+                
                 break;
             }
             case 5: {
                 if (qtdAlunosCadastrados == 0 && qtdProfsCadastrados == 0)
                     exibirErroCadastro();
-                else {
-                    printf("Digite o mes atual:\n");
-                    scanf("%d", &mesAtual);
-                    listarAniversariantes(aluno, professor, qtdAlunosCadastrados, qtdProfsCadastrados, mesAtual);
-                }
+                else
+                    listarAniversariantes(aluno, professor, qtdAlunosCadastrados, qtdProfsCadastrados);
+                
                 break;
             }
         }
@@ -407,15 +422,17 @@ void painelCadastro(){
 }
 
 void painelInformacoesDisplinas(){
+    printf("_____________________________________\n");
     printf("Escolha uma das opcoes para realizar:\n");
     printf("0 - Voltar\n");
     printf("1 - Cadastros de Disciplinas\n");
     printf("2 - Inserir Alunos\n");
     printf("3 - Excluir Alunos\n");
     printf("4 - Listar As Disciplinas\n");
-    printf("5 - Listar Uma Disciplinas\n");
+    printf("5 - Listar Uma Disciplina\n");
     printf("6 - Listar Alunos Em Menos de 3 Disciplinas\n");
     printf("7 - Listar Disciplinas Com 40+ Vagas\n");
+    printf("_____________________________________\n");
 }
 
 void exibirErroCadastro(){
@@ -428,6 +445,12 @@ void exibirCadastroSucesso(){
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     printf("Cadastro realizado com sucesso!\n");
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+}
+
+void exibirCadastroDeletado(){
+    printf("******************\n");
+    printf("Cadastro Deletado!\n");
+    printf("******************\n");
 }
 
 int validarNascimento(infoAlunosProfs pessoa[], int idxPessoa){
@@ -531,7 +554,8 @@ int validarMatricula(infoAlunosProfs pessoa[], int idxPessoa, int qtdPessoasCada
 }
 
 void cadastrarPessoa(infoAlunosProfs pessoa[], int idxPessoa, int qtdPessoasCadastradas){
-    printf("\n******************************\n");
+    printf("\n*******************************\n");
+
     int cadastroValido = FALSE;
 
     while (cadastroValido == FALSE){
@@ -564,11 +588,12 @@ void cadastrarPessoa(infoAlunosProfs pessoa[], int idxPessoa, int qtdPessoasCada
 
     cadastrarCPF(pessoa, idxPessoa, qtdPessoasCadastradas);
 
-    printf("******************************\n");
+    printf("*******************************\n");
     exibirCadastroSucesso();
 }
 
 void atualizarCadastroPessoa(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
+    printf("\n*******************************\n");
     int numMatricula;
     int icont, idxAtualizar = -1;
     printf("Digite o número de matrícula da pessoa que deseja atualizar o cadastro:\n");
@@ -585,6 +610,7 @@ void atualizarCadastroPessoa(infoAlunosProfs pessoa[], int qtdPessoasCadastradas
     }
     else
         printf("Número de matrícula não encontrado!\n");
+    
 }
 
 int deletarCadastro(int qtdCadastros){
@@ -601,12 +627,18 @@ int trocaValores(int ordem[], int cont){
 }
 
 void listarPessoas(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
+    printf("\n==========================\n");
+
     int icont;
     for (icont = 0; icont < qtdPessoasCadastradas; icont++)
-        printf("%s", pessoa[icont].nome);
+        printf("-%s", pessoa[icont].nome);
+
+    printf("==========================\n");
 }
 
 void listarNomesOrdem(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
+    printf("\n==========================\n");
+
     int icont, jcont, kcont, lcont;
     int trocou = TRUE;
     int ordem[qtdPessoasCadastradas];
@@ -645,15 +677,23 @@ void listarNomesOrdem(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
     }
     for (icont = 0; icont < qtdPessoasCadastradas; icont++)
         printf("%d- %s", icont + 1, pessoa[ordem[icont]].nome);
+
+    printf("==========================\n");
 }
 
 void listarSexo(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
+    printf("\n==========================\n\n");
+
     int icont;
     for (icont = 0; icont < qtdPessoasCadastradas; icont++)
         printf("%s%s\n", pessoa[icont].nome, pessoa[icont].sexo);
+
+    printf("==========================\n");
 }
 
 void listarNascimento(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
+     printf("\n==========================\n\n");
+
     int icont, jcont;
     int trocou = TRUE, ordem[qtdPessoasCadastradas];
     int dia[qtdPessoasCadastradas], mes[qtdPessoasCadastradas], ano[qtdPessoasCadastradas];
@@ -686,6 +726,8 @@ void listarNascimento(infoAlunosProfs pessoa[], int qtdPessoasCadastradas){
 
     for (icont = 0; icont < qtdPessoasCadastradas; icont++)
         printf("%s%d/%d/%d\n\n", pessoa[ordem[icont]].nome, dia[ordem[icont]], mes[ordem[icont]], ano[ordem[icont]]);
+
+    printf("==========================\n");
 }
 
 int validarCodigoDisciplina(infoDisciplinas disciplina[], int idxDisciplina, int qtdDisciplinasCadastradas){
@@ -703,6 +745,8 @@ int validarCodigoDisciplina(infoDisciplinas disciplina[], int idxDisciplina, int
 }
 
 void cadastrarDisciplina(infoDisciplinas disciplina[], int idxDisciplina, infoAlunosProfs professor[], int qtdProfsCadastrados, int qtdDisciplinasCadastradas){
+    printf("\n*******************************\n");
+
     int icont, numMatricula, cadastroValido = FALSE;
     disciplina[idxDisciplina].totalAlunos = 0;
 
@@ -740,10 +784,13 @@ void cadastrarDisciplina(infoDisciplinas disciplina[], int idxDisciplina, infoAl
             printf("Erro! Professor Não Encontrado, Tente Novamente!\n");
     }
 
-    printf("Cadastro Realizado Com Sucesso!\n");
+    printf("*******************************\n");
+    exibirCadastroSucesso();
 }
 
 void atualizarCadastroDisciplina(infoDisciplinas disciplina[], int qtdDisciplinasCadastradas, infoAlunosProfs professor[], int qtdProfsCadastrados){
+     printf("\n*******************************\n");
+
     int icont, disciplinaAntiga;
     int idxAtualizar = -1;
 
@@ -766,6 +813,8 @@ void atualizarCadastroDisciplina(infoDisciplinas disciplina[], int qtdDisciplina
 }
 
 void inserirAlunoDisciplina(infoAlunosProfs aluno[], int qtdAlunosCadastrados, infoDisciplinas disciplina[], int qtdDisciplinasCadastradas){
+    printf("\n*****************************************\n");
+
     int icont, jcont;
     int numMatricula, codigoDisciplina;
 
@@ -797,9 +846,13 @@ void inserirAlunoDisciplina(infoAlunosProfs aluno[], int qtdAlunosCadastrados, i
         if (jcont == qtdDisciplinasCadastradas)
             printf("Código da Disciplina Não Encontrado!\n");
     }
+
+    printf("****************************************\n");
 }
 
 void excluirAlunoDisciplina(infoDisciplinas disciplina[], int qtdDisciplinasCadastradas){
+    printf("\n****************************************\n");
+
     int icont;
     int codigoDisciplina;
 
@@ -817,19 +870,27 @@ void excluirAlunoDisciplina(infoDisciplinas disciplina[], int qtdDisciplinasCada
 
     if (icont == qtdDisciplinasCadastradas)
         printf("Código Não Encontrado!\n");
+
+    printf("****************************************\n\n");
 }
 
 void listarDisciplinas(infoDisciplinas disciplina[], int qtdDisciplinasCadastradas, infoAlunosProfs professor[]){
     int icont;
+    printf("\n==========================\n");
+
     for (icont = 0; icont < qtdDisciplinasCadastradas; icont++){
         printf("Disciplina: %s", disciplina[icont].nome);
         printf("Código: %d\n", disciplina[icont].codigo);
         printf("Semestre: %.1f\n", disciplina[icont].semestre);
-        printf("Professor: %s\n", professor[disciplina[icont].professor].nome);
+        printf("Professor: %s", professor[disciplina[icont].professor].nome);
     }
+
+    printf("==========================\n\n");
 }
 
 void listarUmaDisciplina(infoDisciplinas disciplina[], infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdDisciplinasCadastradas){
+    printf("\n==========================\n");
+
     int icont, codigoDisciplina, idxDisciplina = -1;
 
     printf("Digite o Código da Disciplina: ");
@@ -851,13 +912,17 @@ void listarUmaDisciplina(infoDisciplinas disciplina[], infoAlunosProfs aluno[], 
 
         printf("Alunos: %d\n", disciplina[idxDisciplina].totalAlunos);
         for (icont = 0; icont < disciplina[idxDisciplina].totalAlunos; icont++)
-            printf("%s", aluno[disciplina[idxDisciplina].aluno[icont]].nome);
+            printf("-%s", aluno[disciplina[idxDisciplina].aluno[icont]].nome);
     }
     else
         printf("Código da Disciplina Não Encontrado!\n");
+
+    printf("==========================\n\n");
 }
 
 void alunosMenosDeTresDisciplinas(infoDisciplinas disciplina[], infoAlunosProfs aluno[], int qtdDisciplinasCadastradas, int qtdAlunosCadastrados){
+    printf("\n==========================\n");
+
     int icont, jcont;
     int contagem[maxNomes] = {0};
 
@@ -869,32 +934,45 @@ void alunosMenosDeTresDisciplinas(infoDisciplinas disciplina[], infoAlunosProfs 
 
     for (icont = 0; icont < qtdAlunosCadastrados; icont++){
         if (contagem[icont] < 3)
-            printf("%s", aluno[icont].nome);
+            printf("-%s", aluno[icont].nome);
     }
+
+    printf("==========================\n\n");
 }
 
 void disciplinasComMais40vagas(infoDisciplinas disciplina[], infoAlunosProfs professor[], int qtdDisciplinasCadastradas){
+    printf("\n==========================\n");
+
     int icont;
     for (icont = 0; icont < qtdDisciplinasCadastradas; icont++){
         if (disciplina[icont].totalAlunos > 2){
             printf("Disciplina: %s", disciplina[icont].nome);
-            printf("Professor: %s\n", professor[disciplina[icont].professor].nome);
+            printf("Professor: %s", professor[disciplina[icont].professor].nome);
         }
     }
+
+    printf("==========================\n\n");
 }
 
-void buscarCadastrado(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados, char nomeBusca[]){
+void buscarCadastrado(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados){
 // busca por letras no nome, ou seja, se algum nome tiver 
 // todas as letras que foram digitadas na busca, esse nome é exibido.
+    printf("\n*******************************\n");
 
+    char nomeBusca[maxCaracPorNome];
     int icont, jcont, kcont, tam;
     int achou = FALSE;
+
+    printf("Digite o nome procurado:\n");
+    fgets (nomeBusca, maxCaracPorNome, stdin);
+
+    
     for (icont = 0; nomeBusca[icont] != '\n'; icont++);
     tam = icont;
     if (tam < minLetrasBusca)
         printf("Letras insuficientes para busca!\n");
     else {
-        printf("Com base na sua busca, esses são os resultados que mais se encaixam:\n");
+        printf("Com base na sua busca, esses são os resultados que mais se encaixam:\n\n");
         for (icont = 0; icont < qtdProfsCadastrados || icont < qtdAlunosCadastrados; icont++){
             jcont = 0;
             kcont = 0;
@@ -911,7 +989,7 @@ void buscarCadastrado(infoAlunosProfs aluno[], infoAlunosProfs professor[], int 
             }
 
             if (achou)
-                printf("%s", aluno[icont].nome);
+                printf("-%s", aluno[icont].nome);
 
             achou = FALSE;
             jcont = 0;
@@ -929,13 +1007,23 @@ void buscarCadastrado(infoAlunosProfs aluno[], infoAlunosProfs professor[], int 
             }
 
             if (achou)
-                printf("%s", professor[icont].nome);
+                printf("-%s", professor[icont].nome);
         }
     }
+
+    printf("\n*******************************\n");
+
 }
 
-void listarAniversariantes(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados, int mesAtual){
-    int icont, mesAluno, mesProf;
+void listarAniversariantes(infoAlunosProfs aluno[], infoAlunosProfs professor[], int qtdAlunosCadastrados, int qtdProfsCadastrados){
+    printf("\n*******************************\n");
+
+    int icont, mesAluno, mesProf, mesAtual;
+
+    printf("Digite o mes atual:\n");
+    scanf("%d", &mesAtual);
+    getchar();
+
     printf("Esses são os cadastrados que fazem aniversário no mes %d:\n", mesAtual);
     for (icont = 0; icont < qtdAlunosCadastrados || icont < qtdProfsCadastrados; icont++){
         mesAluno = (aluno[icont].dataNasc % 1000000) / 10000;
@@ -945,4 +1033,6 @@ void listarAniversariantes(infoAlunosProfs aluno[], infoAlunosProfs professor[],
         if (mesProf == mesAtual && icont < qtdProfsCadastrados)
             printf("- %s", professor[icont].nome);
     }
+
+    printf("*******************************\n");
 }
